@@ -9,11 +9,21 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/hello/{name}")
+     * @Route("/")
      * @Template()
      */
-    public function indexAction($name)
+    public function indexAction()
     {
-        return array('name' => $name);
+    	return [];
+    }
+
+    /**
+     * @Route("/load-json")
+     * @Template()
+     */
+    public function loadJsonAction()
+    {
+
+    	return $this->render('ChemaArsBundle:Main:loadJson.html.twig');
     }
 }
