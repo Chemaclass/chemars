@@ -1,0 +1,5 @@
+chema_ars:
+    resource: "@ChemaArsBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
