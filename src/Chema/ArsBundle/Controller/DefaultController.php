@@ -22,8 +22,6 @@ class DefaultController extends Controller implements VouchersAPIInterface
 	        ->getRepository('ChemaArsBundle:Voucher')
 		    ->getTotal();
 
-		error_log("total: ".$total);
-
 		$pathInput = $pathJs . (($total==0) ? '/input1.json' : '/input2.json');
 
 		return file_get_contents($pathInput);
