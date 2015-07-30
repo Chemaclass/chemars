@@ -10,4 +10,21 @@ namespace Chema\ArsBundle\Entity;
  */
 class VoucherRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function findAllOrderedDateFound()
+	{
+		return $this->getEntityManager()
+			->createQuery(
+					'SELECT v FROM ChemaArsBundle:Voucher v ORDER BY v.dateFound ASC'
+			)
+			->getResult();
+	}
+
+	public function getTotal()
+	{
+		return $this->getEntityManager()
+			->createQuery(
+					'SELECT count(v.id) FROM ChemaArsBundle:Voucher v'
+			)
+			->getSingleScalarResult();
+	}
 }
