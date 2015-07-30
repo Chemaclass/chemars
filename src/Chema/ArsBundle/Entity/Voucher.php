@@ -66,10 +66,16 @@ class Voucher
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="foundDate", type="datetime")
+     * @ORM\Column(name="dateFound", type="datetime")
      */
-    private $foundDate;
+    private $dateFound;
 
+    /**
+     *
+     */
+	public function __construct() {
+		$this->dateFound = new \DateTime("now");
+	}
 
     /**
      * Get id
@@ -226,26 +232,26 @@ class Voucher
     }
 
     /**
-     * Set foundDate
+     * Set dateFound
      *
-     * @param \DateTime $foundDate
+     * @param \DateTime $dateFound
      *
      * @return Voucher
      */
-    public function setFoundDate($foundDate)
+    public function setDateFound($dateFound)
     {
-        $this->foundDate = $foundDate;
+        $this->dateFound = $dateFound;
 
         return $this;
     }
 
     /**
-     * Get foundDate
+     * Get dateFound
      *
      * @return \DateTime
      */
-    public function getFoundDate()
+    public function getDateFound()
     {
-        return $this->foundDate;
+        return $this->dateFound;
     }
 }
