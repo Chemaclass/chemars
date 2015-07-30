@@ -11,13 +11,17 @@ use Chema\ArsBundle\Entity\Voucher;
 class DefaultController extends Controller implements VouchersAPIInterface
 {
 	/**
+	 * This method will return all vouchers from our partner in a JSON format.
 	 *
 	 * @return string
 	 */
 	public function getVouchers(){
 		$pathJs = $this->get('kernel')->getRootDir() . '/../web/js';
 
-		// query checking if they're datas.
+		/*
+		 * Query for to check if we have data. If we have take the 2st file.
+		 * If we don't have data take the 1st file.
+		 */
 		$total = $this->getDoctrine()
 	        ->getRepository('ChemaArsBundle:Voucher')
 		    ->getTotal();
@@ -28,11 +32,16 @@ class DefaultController extends Controller implements VouchersAPIInterface
 	}
 
     /**
+     * Index route.
+     *
      * @Route("/")
      * @Template()
      */
     public function indexAction()
     {
+    	/*
+    	 * Get all vouchers order by dateFound
+    	 */
     	$vouchers = $this->getDoctrine()
 	        ->getRepository('ChemaArsBundle:Voucher')
 	        ->findAllOrderedDateFound();
@@ -43,11 +52,15 @@ class DefaultController extends Controller implements VouchersAPIInterface
     }
 
     /**
+     * Update the DDBB with the datas from the JSON file.
+     *
      * @Route("/update-json")
      */
     public function getJsonAction()
     {
     	$dm = $this->getDoctrine()->getManager();
+    	$repo =	$this->getDoctrine()->getRepository('ChemaArsBundle:Voucher');
+
     	$jsondata = $this->getVouchers();
     	$json = json_decode($jsondata);
     	foreach ($json as $j){
@@ -61,13 +74,19 @@ class DefaultController extends Controller implements VouchersAPIInterface
     		$voucher->setUrl($j->destinationUrl);
     		$voucher->setStartDate(new \DateTime($j->startDate));
     		$voucher->setExpiryDate(new \DateTime($j->expiryDate));
+    		/*
+    		 * We need to see if the current voucher exists or it's a new one.
+    		 * If exists just return an update his dateFound (is preUpdate func),
+    		 * if not exists just return the same (new one).
+    		 *
+    		 * After that just call dm->persist(voucher) for update (if was exists before)
+    		 * or create (if it's a new one).
+    		 */
+    		$voucher = $repo->getVoucherIfexists($voucher);
     		$dm->persist($voucher);
     	}
     	$dm->flush();
     	return $this->redirect('/app_dev.php');
     }
-
-
-
 
 }
