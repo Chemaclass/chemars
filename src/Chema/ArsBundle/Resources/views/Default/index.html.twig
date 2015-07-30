@@ -7,7 +7,7 @@
 
 	<section class="row">
 		<header class="col-xs-12">
-			<h1>Vouchers</h1>
+			<h1>Vouchers ({{vouchers|length}})</h1>
 		</header>
 	</section>
 
@@ -33,7 +33,9 @@
 					<td>{{voucher.dateFound|date("m/d/Y H:m:s")}}</td>
 				</tr>
 			{% else %}
-				<tr>Keine vouchers</tr>
+				<tr>
+					<td colspan="6">Keine vouchers</td>
+				</tr>
 			{% endfor %}
 		</table>
 	</section>
