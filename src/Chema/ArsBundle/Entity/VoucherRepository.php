@@ -14,7 +14,7 @@ class VoucherRepository extends \Doctrine\ORM\EntityRepository
 	{
 		return $this->getEntityManager()
 			->createQuery(
-					'SELECT v FROM ChemaArsBundle:Voucher v ORDER BY v.dateFound ASC'
+					'SELECT v FROM ChemaArsBundle:Voucher v ORDER BY v.dateFound DESC'
 			)
 			->getResult();
 	}
