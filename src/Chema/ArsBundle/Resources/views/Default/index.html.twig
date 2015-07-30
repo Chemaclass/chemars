@@ -4,10 +4,39 @@
 
 {% block body %}
 <article class="container">
+
+	<section class="row">
+		<header class="col-xs-12">
+			<h1>Vouchers</h1>
+		</header>
+	</section>
+
+	<section class="row">
+		<table class="col-xs-12 table table-condensed">
+			<tr>
+				<th>Shop</th>
+				<th>Code</th>
+				<th>Value</th>
 	
-	<header class="col-xs-12">
-		<h1>Vouchers</h1>
-	</header>
+				<th>Start Date</th>
+				<th>Expiry Date</th>
+				<th>Date Found</th>
+			</tr>
+			{% for voucher in vouchers %}
+				<tr>
+					<td>{{voucher.shop}}</td>
+					<td><a href="{{voucher.url}}">{{voucher.code}}</a></td>
+					<td>{{voucher.value}}</td>
+	
+					<td>{{voucher.startDate|date("m/d/Y")}}</td>
+					<td>{{voucher.expiryDate|date("m/d/Y")}}</td>
+					<td>{{voucher.dateFound|date("m/d/Y H:m:s")}}</td>
+				</tr>
+			{% else %}
+				<tr>Keine vouchers</tr>
+			{% endfor %}
+		</table>
+	</section>
 	
 </article>
 {% endblock %}
