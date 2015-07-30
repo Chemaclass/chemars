@@ -89,10 +89,12 @@ class DefaultController extends Controller implements VouchersAPIInterface
     		$dm->persist($voucher);
     	}
     	$dm->flush();
-    	return $this->redirect('/app_dev.php');
+    	return $this->redirect('/');
     }
 
     /**
+     * Remove a voucher.
+     *
      * @Route("/remove-voucher")
      */
     public function removeVoucherAction(Request $request)

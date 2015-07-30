@@ -12,7 +12,7 @@ $(document).on('click', '.voucher-delete', function(e) {
     voucherId = $this.attr('voucher_id')
 
     data = {voucherId : voucherId}
-    
+
 	$.ajax({
 		url : "remove-voucher",
 		type : "POST",
@@ -22,6 +22,10 @@ $(document).on('click', '.voucher-delete', function(e) {
 			
 		},
 		success : function(json) {
+			// rest 1 to total
+			vouchersTotal = $('.vouchers-total').text()
+			$('.vouchers-total').text(vouchersTotal-1)
+			// remove tr row
 			parent = $this.parent().parent()
 			parent.remove()
 		}, error: function (xhr, ajaxOptions, thrownError) {
