@@ -3,3 +3,6 @@ chema_ars:
     type:     annotation
     prefix:   /
 
+homepage:
+    pattern:  /
+    defaults: { _controller: ChemaArsBundle:Welcome:index }
