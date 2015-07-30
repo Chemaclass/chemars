@@ -2,6 +2,9 @@
 
 namespace Chema\ArsBundle\Entity;
 
+use Doctrine\DBAL\Query\QueryBuilder;
+use Assetic\Exception\Exception;
+
 /**
  * VoucherRepository
  *
@@ -10,6 +13,9 @@ namespace Chema\ArsBundle\Entity;
  */
 class VoucherRepository extends \Doctrine\ORM\EntityRepository
 {
+	/**
+	 * findAllOrderedDateFound
+	 */
 	public function findAllOrderedDateFound()
 	{
 		return $this->getEntityManager()
@@ -19,6 +25,9 @@ class VoucherRepository extends \Doctrine\ORM\EntityRepository
 			->getResult();
 	}
 
+	/**
+	 * getTotal
+	 */
 	public function getTotal()
 	{
 		return $this->getEntityManager()
@@ -26,5 +35,33 @@ class VoucherRepository extends \Doctrine\ORM\EntityRepository
 					'SELECT count(v.id) FROM ChemaArsBundle:Voucher v'
 			)
 			->getSingleScalarResult();
+	}
+
+	/**
+	 * Check if exists the voucher.
+	 *
+	 * If exists return the existing one,
+	 * if not exists return the same as we pass as param.
+	 *
+	 * @param Voucher $voucher Voucher to check if exists or not.
+	 * @return Voucher object result.
+	 */
+	public function getVoucherIfexists($voucher)
+	{
+		$em = $this->getEntityManager();
+		$queryVoucher = $em->createQuery('
+			SELECT v
+			FROM ChemaArsBundle:Voucher v
+			WHERE v.code = :code
+			AND v.shop = :shop
+			AND v.value = :value')
+			->setParameter('code', $voucher->getCode())
+			->setParameter('shop', $voucher->getShop())
+			->setParameter('value', $voucher->getValue());
+		try{
+			return $queryVoucher->getSingleResult();
+		}catch(\Exception $e ){
+			return $voucher;
+		}
 	}
 }
