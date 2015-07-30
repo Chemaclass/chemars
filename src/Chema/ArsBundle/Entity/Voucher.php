@@ -87,6 +87,15 @@ class Voucher
     }
 
     /**
+     *
+     * Restart the dateFound property.
+     */
+    public function preUpdate()
+    {
+    	$this->dateFound = new \DateTime("now");
+    }
+
+    /**
      * Get id
      *
      * @return integer
