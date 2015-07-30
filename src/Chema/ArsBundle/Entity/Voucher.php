@@ -71,11 +71,20 @@ class Voucher
     private $dateFound;
 
     /**
-     *
+     * Constructor
      */
-	public function __construct() {
-		$this->dateFound = new \DateTime("now");
-	}
+    public function __construct() {
+        $this->dateFound = new \DateTime("now");
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+    	return "Voucher(code: $this->code, value: $this->value)";
+    }
 
     /**
      * Get id
