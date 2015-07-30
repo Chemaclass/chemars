@@ -21,9 +21,10 @@
 				<th>Start Date</th>
 				<th>Expiry Date</th>
 				<th>Date Found</th>
+				<th>Actions</th>
 			</tr>
 			{% for voucher in vouchers %}
-				<tr>
+				<tr class="voucher">
 					<td>{{voucher.shop}}</td>
 					<td><a href="{{voucher.url}}">{{voucher.code}}</a></td>
 					<td>{{voucher.value}}</td>
@@ -31,6 +32,7 @@
 					<td>{{voucher.startDate|date("m/d/Y")}}</td>
 					<td>{{voucher.expiryDate|date("m/d/Y")}}</td>
 					<td>{{voucher.dateFound|date("m/d/Y H:m:s")}}</td>
+					<td><button class="btn btn-danger voucher-delete" voucher_id="{{voucher.id}}">Delete</button></td>
 				</tr>
 			{% else %}
 				<tr>

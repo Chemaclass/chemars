@@ -2,11 +2,14 @@
 
 namespace Chema\ArsBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Chema\ArsBundle\Entity\VouchersAPIInterface;
 use Chema\ArsBundle\Entity\Voucher;
+use Symfony\Component\BrowserKit\Response;
 
 class DefaultController extends Controller implements VouchersAPIInterface
 {
@@ -86,7 +89,21 @@ class DefaultController extends Controller implements VouchersAPIInterface
     		$dm->persist($voucher);
     	}
     	$dm->flush();
-    	return $this->redirect('/');
+    	return $this->redirect('/app_dev.php');
+    }
+
+    /**
+     * @Route("/remove-voucher")
+     */
+    public function removeVoucherAction(Request $request)
+    {
+    	$voucherId = $request->request->get('voucherId');
+    	$dm = $this->getDoctrine()->getManager();
+    	$repo =	$this->getDoctrine()->getRepository('ChemaArsBundle:Voucher');
+    	$voucher = $repo->find($voucherId);
+    	$dm->remove($voucher);
+    	$dm->flush();
+    	return new JsonResponse(['code' => 200]);
     }
 
 }
