@@ -71,6 +71,13 @@ class Voucher
     private $dateFound;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="originalVoucherId", type="integer")
+     */
+    private $originalVoucherId;
+
+    /**
      * Constructor
      */
     public function __construct() {
@@ -272,4 +279,22 @@ class Voucher
     {
         return $this->dateFound;
     }
+
+    /**
+     * @return int
+     */
+    public function getOriginalVoucherId()
+    {
+        return $this->originalVoucherId;
+    }
+
+    /**
+     * @param int $originalVoucherId
+     */
+    public function setOriginalVoucherId($originalVoucherId)
+    {
+        $this->originalVoucherId = $originalVoucherId;
+    }
+
+
 }

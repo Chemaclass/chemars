@@ -66,26 +66,36 @@ class DefaultController extends Controller implements VouchersAPIInterface
 
     	$jsondata = $this->getVouchers();
     	$json = json_decode($jsondata);
+
+
+        $already_found_vouchers = array();
     	foreach ($json as $j){
-    		/*
-    		 * I took as a shop the domain from the destinationUrl
-    		 */
-    		$voucher = new Voucher();
-    		$voucher->setShop(parse_url($j->destinationUrl, PHP_URL_HOST));
-    		$voucher->setCode($j->code);
-    		$voucher->setValue($j->discount);
-    		$voucher->setUrl($j->destinationUrl);
-    		$voucher->setStartDate(new \DateTime($j->startDate));
-    		$voucher->setExpiryDate(new \DateTime($j->expiryDate));
-    		/*
-    		 * We need to see if the current voucher exists or it's a new one.
-    		 * If exists just return an update his dateFound (is preUpdate func),
-    		 * if not exists just return the same (new one).
-    		 *
-    		 * After that just call dm->persist(voucher) for update (if was exists before)
-    		 * or create (if it's a new one).
-    		 */
-    		$voucher = $repo->getVoucherIfexists($voucher);
+            $original_voucher_id = $j->id;
+
+            // File is sorted by newest vouchers first. And it also has the old ones in it.
+            // So in order it doesn't get overwritten we have to just persist the first voucher found in the file.
+            if (in_array($original_voucher_id, $already_found_vouchers, true)) {
+                continue;
+            } else {
+                $already_found_vouchers[] = $original_voucher_id;
+            }
+
+            $voucher = $repo->findOneBy(array('originalVoucherId' => $original_voucher_id));
+
+            if (!$voucher) {
+                $voucher = new Voucher();
+                $voucher->setOriginalVoucherId($original_voucher_id);
+            }
+            // TODO: Could also think of making a setter for dateFound and update if it really was updated
+
+            // Override all the values and save again
+            $voucher->setShop(parse_url($j->destinationUrl, PHP_URL_HOST));
+            $voucher->setCode($j->code);
+            $voucher->setValue($j->discount);
+            $voucher->setUrl($j->destinationUrl);
+            $voucher->setStartDate(new \DateTime($j->startDate));
+            $voucher->setExpiryDate(new \DateTime($j->expiryDate));
+
     		$dm->persist($voucher);
     	}
     	$dm->flush();
